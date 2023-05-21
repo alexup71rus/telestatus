@@ -15,6 +15,7 @@ $arTabs = [
     [
         'DIV' => 'settings',
         'TAB' => Loc::getMessage('INTENSA_TELESTATUS_TAB_SETTINGS'),
+        'TITLE' => Loc::getMessage('INTENSA_TELESTATUS_TAB_TITLE_SETTINGS'),
         'OPTIONS' => [
             [
                 'field_token',

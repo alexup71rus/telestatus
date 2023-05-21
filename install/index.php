@@ -1,7 +1,7 @@
 <?php
 
-use Bitrix\Main\Localization\Loc;
-use Bitrix\Main\ModuleManager;
+use \Bitrix\Main\Localization\Loc;
+use \Bitrix\Main\ModuleManager;
 use \Bitrix\Main\Config\Option;
 
 
@@ -35,14 +35,27 @@ class intensa_telestatus extends CModule
         if ($this->isVersionD7()) {
             ModuleManager::registerModule($this->MODULE_ID);
         } else {
-            $APPLICATION->ThrowException(LOC::getMessage('TELESTATUS_INSTALL_ERROR_VERSION'));
+            $APPLICATION->ThrowException(Loc::getMessage('TELESTATUS_INSTALL_ERROR_VERSION'));
         }
     }
 
     public function doUninstall()
     {
-        Option::delete($this->MODULE_ID);
-        ModuleManager::unRegisterModule($this->MODULE_ID);
+        global $APPLICATION;
+
+        $context = \Bitrix\Main\Application::GetInstance()->getContext();
+        $request = $context->getRequest();
+
+        if ($request['step'] === null) {
+            $APPLICATION->IncludeAdminFile(Loc::getMessage('TELESTATUS_UNINSTALL_TITLE'),
+                __DIR__ . '/unstep.php');
+        } elseif ($request['step'] === '2') {
+            if ($request['savedata'] !== 'Y') {
+                Option::delete($this->MODULE_ID);
+            }
+
+            ModuleManager::unRegisterModule($this->MODULE_ID);
+        }
     }
 
     public function isVersionD7(): bool
