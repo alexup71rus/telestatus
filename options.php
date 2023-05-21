@@ -11,6 +11,7 @@ Loc::loadMessages(__FILE__);
 
 \Bitrix\Main\Loader::includeModule($module_id);
 
+$noteMessageTemplate = Loc::getMessage('INTENSA_TELESTATUS_TEMPLATE_NOTE_SETTINGS');
 $arTabs = [
     [
         'DIV' => 'settings',
@@ -28,6 +29,9 @@ $arTabs = [
                 Loc::getMessage('INTENSA_TELESTATUS_FIELD_MESSAGE_SETTINGS'),
                 '',
                 ['textarea', 10, 50],
+            ],
+            [
+                'note' => $noteMessageTemplate,
             ],
         ],
     ],
@@ -66,20 +70,23 @@ $formAction = $APPLICATION->GetCurPage() . '?mid=' . $module_id . '&amp;lang=' .
 
 ?>
 <?php $tabControl->Begin(); ?>
-<form method="post" action="<?= $formAction ?>" name="intensa_telestatus">
-    <?php
-    foreach ($arTabs as $arTab) {
-        if ($arTab['OPTIONS']) {
-            $tabControl->BeginNextTab();
-            __AdmSettingsDrawList($module_id, $arTab['OPTIONS']);
+    <form method="post" action="<?= $formAction ?>" name="intensa_telestatus">
+        <?php
+        foreach ($arTabs as $arTab) {
+            if ($arTab['OPTIONS']) {
+                $tabControl->BeginNextTab();
+                __AdmSettingsDrawList($module_id, $arTab['OPTIONS']);
+            }
         }
-    }
 
-    $tabControl->BeginNextTab();
-    $tabControl->Buttons();
-    ?>
-    <input type="submit" name="Update" class="adm-btn-save" value="<?= GetMessage('MAIN_SAVE') ?>">
-    <input type="reset" name="Reset" value="<?= GetMessage('MAIN_RESET') ?>">
-    <?= bitrix_sessid_post(); ?>
-</form>
+        $tabControl->BeginNextTab();
+
+        require_once $_SERVER['DOCUMENT_ROOT']. '/bitrix/modules/main/admin/group_rights.php';
+
+        $tabControl->Buttons();
+        ?>
+        <input type="submit" name="Update" class="adm-btn-save" value="<?= GetMessage('MAIN_SAVE') ?>">
+        <input type="reset" name="Reset" value="<?= GetMessage('MAIN_RESET') ?>">
+        <?= bitrix_sessid_post(); ?>
+    </form>
 <?php $tabControl->End(); ?>
