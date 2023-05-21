@@ -1,10 +1,9 @@
 <?php
 
-use Bitrix\Main\Application;
-use Bitrix\Main\Loader;
-use Bitrix\Main\Entity\Base;
 use Bitrix\Main\Localization\Loc;
 use Bitrix\Main\ModuleManager;
+use \Bitrix\Main\Config\Option;
+
 
 Loc::loadMessages(__FILE__);
 
@@ -42,6 +41,7 @@ class intensa_telestatus extends CModule
 
     public function doUninstall()
     {
+        Option::delete($this->MODULE_ID);
         ModuleManager::unRegisterModule($this->MODULE_ID);
     }
 
