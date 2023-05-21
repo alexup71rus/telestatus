@@ -36,24 +36,27 @@ $arTabs = [
         'TITLE' => Loc::getMessage('MAIN_TAB_TITLE_RIGHTS'),
     ],
 ];
-#5892004853:AAFSnYqHWkFTaJLP3Tw1KXFzLgtIt7nEj0U
+
 if ($request->isPost() && $request['Update'] && check_bitrix_sessid()) {
-    foreach ($arTabs['OPTIONS'] as $arOption) {
-        // Строка с подсветкой. Используется для разделения настроек в одной вкладке
-        if (!is_array($arOption)) {
-            continue;
+    foreach ($arTabs as $arTab) {
+        foreach ($arTab['OPTIONS'] as $arOption) {
+            // Строка с подсветкой. Используется для разделения настроек в одной вкладке
+            if (!is_array($arOption)) {
+                continue;
+            }
+
+            // Уведомление с подсветкой
+            if ($arOption['note']) {
+                continue;
+            }
+
+            // или __AdmSettingsSaveOption($module_id, $arOption);
+            $optionName = $arOption[0];
+            $optionValue = $request->getPost($optionName);
+
+            Option::set($module_id, $optionName,
+                is_array($optionValue) ? implode(',', $optionValue) : $optionValue);
         }
-
-        // Уведомление с подсветкой
-        if ($arOption['note']) {
-            continue;
-        }
-
-        // или __AdmSettingsSaveOption($module_id, $arOption);
-        $optionName = $arOption[0];
-        $optionValue = $request->getPost($optionName);
-
-        Option::set($module_id, $optionName, is_array($optionValue) ? implode(',', $optionValue) : $optionValue);
     }
 }
 
