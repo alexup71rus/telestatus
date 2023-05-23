@@ -4,10 +4,7 @@ namespace Intensa\Telestatus;
 
 use Bitrix\Main\Config\Option;
 use Bitrix\Main\Event;
-use Bitrix\Main\Localization\Loc;
 use CSaleStatus;
-
-Loc::loadMessages(__FILE__);
 
 class Sender
 {
@@ -28,24 +25,30 @@ class Sender
         $order = $event->getParameter("ENTITY");
         $orderId = $order->getId();
         $sum = $order->getField('PRICE');
+
+        // текущий статус
         $currentStatus = $event->getParameter('VALUE');
         $arCurrentStatus = CSaleStatus::GetByID($currentStatus);
         $currentStatusName = $arCurrentStatus['NAME'];
+
+        // предыдущий статус
         $oldStatus = $event->getParameter('OLD_VALUE');
         $arOldStatus = CSaleStatus::GetByID($oldStatus);
         $oldStatusName = $arOldStatus['NAME'];
+
+        // это можно было бы вынести в отдельный файл, вместе с id модуля
         $options = [
             '%ID%' => $orderId,
             '%STATUS%' => $currentStatusName,
             '%PREV_STATUS%' => $oldStatusName,
-            '%PRICE%' => $sum . ' Руб.',
+            '%PRICE%' => $sum . ' Руб.', // эту инфу тоже из битрикса можно получать, но не стал усложнять
         ];
 
         $request = "https://api.telegram.org/bot{$token}/sendMessage?chat_id=@{$channel}&text=";
         $request .= self::buildTemplate($message, $options);
 
         if (!file_get_contents($request)) {
-            // logger
+            // тут можно обрабатывать ошибки
         }
 
         return false;
@@ -53,6 +56,8 @@ class Sender
 
     public static function buildTemplate(string $template, array $options): string
     {
+        // \r, \n и другие переносы строк, кроме %0A телеграм воспринимает как _. Получается, что было очень много _,
+        // поэтому сначала надо очистить \r а потом преобразовать \n в перенос строки, который телеграм поймёт - %0A
         $template = str_replace("\r", "", $template);
         $template = str_replace("\n", "%0A", $template);
 
