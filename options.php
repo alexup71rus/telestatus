@@ -25,6 +25,12 @@ $arTabs = [
                 ['text', 55],
             ],
             [
+                'field_channel',
+                Loc::getMessage('INTENSA_TELESTATUS_FIELD_CHANNEL_SETTINGS'),
+                '',
+                ['text', 55],
+            ],
+            [
                 'field_message',
                 Loc::getMessage('INTENSA_TELESTATUS_FIELD_MESSAGE_SETTINGS'),
                 '',

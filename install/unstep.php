@@ -12,7 +12,7 @@ Loc::loadMessages(__FILE__);
 <form action="<?= $APPLICATION->GetCurPage() ?>">
     <?= bitrix_sessid_post() ?>
     <input type="hidden" name="lang" value="<?= LANGUAGE_ID ?>">
-    <input type="hidden" name="id" value="<?= $request->get('id') ?>">
+    <input type="hidden" name="id" value="intensa.telestatus">
     <input type="hidden" name="uninstall" value="Y">
     <input type="hidden" name="step" value="2">
     <?= CAdminMessage::ShowMessage(Loc::getMessage('MOD_UNINST_WARN')) ?>

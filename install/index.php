@@ -9,6 +9,8 @@ Loc::loadMessages(__FILE__);
 
 class intensa_telestatus extends CModule
 {
+    protected $partnerUri = 'https://intensa.ru/';
+
     public function __construct()
     {
         $arModuleVersion = [];
@@ -19,13 +21,16 @@ class intensa_telestatus extends CModule
             $this->MODULE_VERSION_DATE = $arModuleVersion['VERSION_DATE'];
         }
 
+//        var_dump(str_replace("_", ".", get_class($this)));
+
+//        $this->MODULE_ID = str_replace("_", ".", get_class($this));
         $this->MODULE_ID = 'intensa.telestatus';
         $this->MODULE_NAME = Loc::getMessage('TELESTATUS_MODULE_NAME');
         $this->MODULE_DESCRIPTION = Loc::getMessage('TELESTATUS_MODULE_DESCRIPTION');
         $this->SHOW_SUPER_ADMIN_GROUP_RIGHTS = 'Y';
         $this->MODULE_GROUP_RIGHTS = 'Y';
         $this->PARTNER_NAME = Loc::getMessage('TELESTATUS_MODULE_PARTNER_NAME');
-        $this->PARTNER_URI = 'https://intensa.ru/';
+        $this->PARTNER_URI = $this->partnerUri;
     }
 
     public function doInstall()
@@ -34,6 +39,7 @@ class intensa_telestatus extends CModule
 
         if ($this->isVersionD7()) {
             ModuleManager::registerModule($this->MODULE_ID);
+            $this->InstallEvents();
         } else {
             $APPLICATION->ThrowException(Loc::getMessage('TELESTATUS_INSTALL_ERROR_VERSION'));
         }
@@ -54,8 +60,33 @@ class intensa_telestatus extends CModule
                 Option::delete($this->MODULE_ID);
             }
 
+            $this->UnInstallEvents();
             ModuleManager::unRegisterModule($this->MODULE_ID);
         }
+    }
+
+    public function InstallEvents(): bool {
+        \Bitrix\Main\EventManager::getInstance()->registerEventHandler(
+            "sale",
+            "OnSaleStatusOrderChange",
+            $this->MODULE_ID,
+            "Intensa\Telestatus\Sender",
+            "onStatusChange"
+        );
+
+        return false;
+    }
+
+    public function UnInstallEvents(): bool {
+        \Bitrix\Main\EventManager::getInstance()->unRegisterEventHandler(
+            "sale",
+            "OnSaleStatusOrderChange",
+            $this->MODULE_ID,
+            "Intensa\Telestatus\Sender",
+            "onStatusChange"
+        );
+
+        return false;
     }
 
     public function isVersionD7(): bool
