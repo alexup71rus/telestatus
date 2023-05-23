@@ -4,7 +4,6 @@ namespace Intensa\Telestatus;
 
 use Bitrix\Main\Config\Option;
 use Bitrix\Main\Localization\Loc;
-use Bitrix\Main\Mail\Event;
 
 Loc::loadMessages(__FILE__);
 
@@ -37,14 +36,14 @@ class Sender
         $request = "https://api.telegram.org/bot{$token}/sendMessage?chat_id=@{$channel}&text=test";
 
         $request .= 'id: '
-            .$orderId
-            .', old status: '
-            .$oldStatusName
-            .', status: '
-            .$currentStatusName
-            .', price: '
-            .$sum
-            .'Руб.';
+            . $orderId
+            . ', old status: '
+            . $oldStatusName
+            . ', status: '
+            . $currentStatusName
+            . ', price: '
+            . $sum
+            . 'Руб.';
 
         if (!file_get_contents($request)) {
             // logger

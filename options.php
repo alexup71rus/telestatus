@@ -87,7 +87,7 @@ $formAction = $APPLICATION->GetCurPage() . '?mid=' . $module_id . '&amp;lang=' .
 
         $tabControl->BeginNextTab();
 
-        require_once $_SERVER['DOCUMENT_ROOT']. '/bitrix/modules/main/admin/group_rights.php';
+        require_once $_SERVER['DOCUMENT_ROOT'] . '/bitrix/modules/main/admin/group_rights.php';
 
         $tabControl->Buttons();
         ?>

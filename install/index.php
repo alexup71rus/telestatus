@@ -65,7 +65,8 @@ class intensa_telestatus extends CModule
         }
     }
 
-    public function InstallEvents(): bool {
+    public function InstallEvents(): bool
+    {
         \Bitrix\Main\EventManager::getInstance()->registerEventHandler(
             "sale",
             "OnSaleStatusOrderChange",
@@ -77,7 +78,8 @@ class intensa_telestatus extends CModule
         return false;
     }
 
-    public function UnInstallEvents(): bool {
+    public function UnInstallEvents(): bool
+    {
         \Bitrix\Main\EventManager::getInstance()->unRegisterEventHandler(
             "sale",
             "OnSaleStatusOrderChange",
