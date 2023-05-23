@@ -23,10 +23,7 @@ class intensa_telestatus extends CModule
             $this->MODULE_VERSION_DATE = $arModuleVersion['VERSION_DATE'];
         }
 
-//        var_dump(str_replace("_", ".", get_class($this)));
-
-//        $this->MODULE_ID = str_replace("_", ".", get_class($this));
-        $this->MODULE_ID = 'intensa.telestatus';
+        $this->MODULE_ID = str_replace("_", ".", get_class($this));
         $this->MODULE_NAME = Loc::getMessage('TELESTATUS_MODULE_NAME');
         $this->MODULE_DESCRIPTION = Loc::getMessage('TELESTATUS_MODULE_DESCRIPTION');
         $this->SHOW_SUPER_ADMIN_GROUP_RIGHTS = 'Y';
