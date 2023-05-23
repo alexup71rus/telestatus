@@ -11,7 +11,7 @@ Loc::loadMessages(__FILE__);
 
 class intensa_telestatus extends CModule
 {
-    protected $partnerUri = 'https://intensa.ru/';
+    protected string $partnerUri = 'https://intensa.ru/';
 
     public function __construct()
     {
@@ -32,7 +32,7 @@ class intensa_telestatus extends CModule
         $this->PARTNER_URI = $this->partnerUri;
     }
 
-    public function doInstall()
+    public function doInstall(): void
     {
         global $APPLICATION;
 
@@ -44,7 +44,7 @@ class intensa_telestatus extends CModule
         }
     }
 
-    public function doUninstall()
+    public function doUninstall(): void
     {
         global $APPLICATION;
 
