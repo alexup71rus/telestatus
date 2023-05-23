@@ -11,6 +11,7 @@ $module_id = htmlspecialchars($request['mid']);
 Loc::loadMessages($_SERVER['DOCUMENT_ROOT'] . BX_ROOT . '/modules/main/options.php');
 Loc::loadMessages(__FILE__);
 
+// вот это возможно лучше в include.php поместить, но в официальных уроках оно было тут
 Loader::includeModule($module_id);
 
 $noteMessageTemplate = Loc::getMessage('INTENSA_TELESTATUS_TEMPLATE_NOTE_SETTINGS');
