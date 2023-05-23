@@ -1,8 +1,10 @@
 <?php
 
-use \Bitrix\Main\Localization\Loc;
-use \Bitrix\Main\ModuleManager;
-use \Bitrix\Main\Config\Option;
+use Bitrix\Main\Application;
+use Bitrix\Main\EventManager;
+use Bitrix\Main\Localization\Loc;
+use Bitrix\Main\ModuleManager;
+use Bitrix\Main\Config\Option;
 
 
 Loc::loadMessages(__FILE__);
@@ -49,7 +51,7 @@ class intensa_telestatus extends CModule
     {
         global $APPLICATION;
 
-        $context = \Bitrix\Main\Application::GetInstance()->getContext();
+        $context = Application::GetInstance()->getContext();
         $request = $context->getRequest();
 
         if ($request['step'] === null) {
@@ -67,7 +69,7 @@ class intensa_telestatus extends CModule
 
     public function InstallEvents(): bool
     {
-        \Bitrix\Main\EventManager::getInstance()->registerEventHandler(
+        EventManager::getInstance()->registerEventHandler(
             "sale",
             "OnSaleStatusOrderChange",
             $this->MODULE_ID,
@@ -80,7 +82,7 @@ class intensa_telestatus extends CModule
 
     public function UnInstallEvents(): bool
     {
-        \Bitrix\Main\EventManager::getInstance()->unRegisterEventHandler(
+        EventManager::getInstance()->unRegisterEventHandler(
             "sale",
             "OnSaleStatusOrderChange",
             $this->MODULE_ID,

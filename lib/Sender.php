@@ -3,13 +3,15 @@
 namespace Intensa\Telestatus;
 
 use Bitrix\Main\Config\Option;
+use Bitrix\Main\Event;
 use Bitrix\Main\Localization\Loc;
+use CSaleStatus;
 
 Loc::loadMessages(__FILE__);
 
 class Sender
 {
-    public static function onStatusChange(\Bitrix\Main\Event $event): bool
+    public static function onStatusChange(Event $event): bool
     {
         $module_id = pathinfo(dirname(__DIR__))["basename"];
 
@@ -27,10 +29,10 @@ class Sender
         $orderId = $order->getId();
         $sum = $order->getField('PRICE');
         $currentStatus = $event->getParameter('VALUE');
-        $arCurrentStatus = \CSaleStatus::GetByID($currentStatus);
+        $arCurrentStatus = CSaleStatus::GetByID($currentStatus);
         $currentStatusName = $arCurrentStatus['NAME'];
         $oldStatus = $event->getParameter('OLD_VALUE');
-        $arOldStatus = \CSaleStatus::GetByID($oldStatus);
+        $arOldStatus = CSaleStatus::GetByID($oldStatus);
         $oldStatusName = $arOldStatus['NAME'];
         $options = [
             '%ID%' => $orderId,

@@ -1,15 +1,17 @@
 <?php
 
-use \Bitrix\Main\Localization\Loc;
-use \Bitrix\Main\Config\Option;
+use Bitrix\Main\HttpApplication;
+use Bitrix\Main\Loader;
+use Bitrix\Main\Localization\Loc;
+use Bitrix\Main\Config\Option;
 
-$request = \Bitrix\Main\HttpApplication::getInstance()->getContext()->getRequest();
+$request = HttpApplication::getInstance()->getContext()->getRequest();
 $module_id = htmlspecialchars($request['mid']);
 
 Loc::loadMessages($_SERVER['DOCUMENT_ROOT'] . BX_ROOT . '/modules/main/options.php');
 Loc::loadMessages(__FILE__);
 
-\Bitrix\Main\Loader::includeModule($module_id);
+Loader::includeModule($module_id);
 
 $noteMessageTemplate = Loc::getMessage('INTENSA_TELESTATUS_TEMPLATE_NOTE_SETTINGS');
 $arTabs = [
